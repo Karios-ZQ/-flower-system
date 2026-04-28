@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Flower2, Eye, EyeOff, LogIn } from 'lucide-react';
+import { Flower2, Eye, EyeOff, LogIn, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,17 +28,30 @@ export default function LoginPage() {
 
     setIsLoading(true);
 
-    // Simulate login
-    setTimeout(() => {
-      if (username === 'admin' && password === 'admin123') {
-        router.push('/dashboard');
-      } else if (username === 'operator' && password === 'operator123') {
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const result = await response.json();
+
+      if (result.code === 200) {
+        // 保存 token 和用户信息
+        localStorage.setItem('token', result.data.token);
+        localStorage.setItem('user', JSON.stringify(result.data.user));
         router.push('/dashboard');
       } else {
-        setError('用户名或密码错误');
-        setIsLoading(false);
+        setError(result.message || '登录失败');
       }
-    }, 1000);
+    } catch (err) {
+      setError('网络错误，请重试');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -82,6 +95,7 @@ export default function LoginPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="h-11"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -94,6 +108,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="h-11 pr-10"
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
@@ -135,7 +150,7 @@ export default function LoginPage() {
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin" />
                     登录中...
                   </span>
                 ) : (
@@ -150,6 +165,9 @@ export default function LoginPage() {
             <div className="mt-6 pt-6 border-t border-slate-100">
               <p className="text-xs text-slate-400 text-center">
                 演示账号: admin / admin123 或 operator / operator123
+              </p>
+              <p className="text-xs text-slate-400 text-center mt-1">
+                请先在 API 页面初始化数据库
               </p>
             </div>
           </CardContent>
