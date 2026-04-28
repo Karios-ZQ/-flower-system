@@ -210,7 +210,7 @@ export default function DashboardPage() {
               </div>
               <div className="space-y-2 mt-4">
                 {mockCategorySales.map((item, index) => (
-                  <div key={item.categoryName} className="flex items-center justify-between">
+                  <div key={`category-${index}`} className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span
                         className="w-3 h-3 rounded-full"

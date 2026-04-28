@@ -67,7 +67,7 @@ export const mockCategories: Category[] = [
   
   // 绿植盆栽 - 二级分类
   { id: 'c21', name: '多肉植物', parentId: 'c2', level: 2 },
-  { id: 'c22', name: '绿植盆栽', parentId: 'c2', level: 2 },
+  { id: 'c22', name: '观叶植物', parentId: 'c2', level: 2 },
   { id: 'c23', name: '小型盆栽', parentId: 'c2', level: 2 },
   { id: 'c24', name: '大型绿植', parentId: 'c2', level: 2 },
   { id: 'c25', name: '水培植物', parentId: 'c2', level: 2 },
@@ -121,8 +121,8 @@ export const mockProducts: Product[] = [
     stock: 50,
     unit: '束',
     images: [
-      'https://picsum.photos/seed/rose1/400/400',
-      'https://picsum.photos/seed/rose2/400/400',
+      'https://images.unsplash.com/photo-1518882605630-8eb771acf33f?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1548094990-c16ca90f1f0d?w=400&h=400&fit=crop',
     ],
     description: '精选厄瓜多尔红玫瑰11朵，搭配精美礼盒包装，适合生日、情人节、纪念日等浪漫场合。',
     status: 'active',
@@ -141,7 +141,7 @@ export const mockProducts: Product[] = [
     stock: 80,
     unit: '束',
     images: [
-      'https://picsum.photos/seed/carnation/400/400',
+      'https://images.unsplash.com/photo-1596801351262-9b3dc9c436df?w=400&h=400&fit=crop',
     ],
     description: '粉色康乃馨16朵，象征母爱与温馨，适合母亲节、生日礼物、探病慰问。',
     status: 'active',
@@ -160,7 +160,7 @@ export const mockProducts: Product[] = [
     stock: 35,
     unit: '束',
     images: [
-      'https://picsum.photos/seed/lily/400/400',
+      'https://images.unsplash.com/photo-1615813967515-e1838c1c5116?w=400&h=400&fit=crop',
     ],
     description: '精选白百合3朵搭配满天星，清新淡雅，适合开业、乔迁、家居装饰。',
     status: 'active',
@@ -179,7 +179,7 @@ export const mockProducts: Product[] = [
     stock: 5,
     unit: '束',
     images: [
-      'https://picsum.photos/seed/tulip/400/400',
+      'https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&h=400&fit=crop',
     ],
     description: '荷兰进口郁金香10朵，多色混搭，高贵优雅，适合高端礼品、婚礼装饰。',
     status: 'active',
@@ -198,7 +198,7 @@ export const mockProducts: Product[] = [
     stock: 0,
     unit: '束',
     images: [
-      'https://picsum.photos/seed/pinkrose/400/400',
+      'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&h=400&fit=crop',
     ],
     description: '粉色玫瑰19朵，精美礼盒包装，表达深深的爱意与祝福，适合表白、求婚。',
     status: 'inactive',
@@ -217,7 +217,7 @@ export const mockProducts: Product[] = [
     stock: 120,
     unit: '盆',
     images: [
-      'https://picsum.photos/seed/succulent/400/400',
+      'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=400&h=400&fit=crop',
     ],
     description: '精选5种多肉植物组合拼盘，易养护，适合办公室桌摆、窗台装饰。',
     status: 'active',
@@ -230,13 +230,13 @@ export const mockProducts: Product[] = [
     id: 'p7',
     name: '绿萝盆栽中号',
     categoryIds: ['c2', 'c22'],
-    categoryNames: ['绿植盆栽', '绿植盆栽'],
+    categoryNames: ['绿植盆栽', '观叶植物'],
     price: 68,
     marketPrice: 88,
     stock: 45,
     unit: '盆',
     images: [
-      'https://picsum.photos/seed/pothos/400/400',
+      'https://images.unsplash.com/photo-1593691509543-c55fb32e7355?w=400&h=400&fit=crop',
     ],
     description: '净化空气首选绿萝，中号盆栽，适合新居装修、办公室净化空气。',
     status: 'active',
@@ -255,7 +255,7 @@ export const mockProducts: Product[] = [
     stock: 25,
     unit: '盒',
     images: [
-      'https://picsum.photos/seed/preserve/400/400',
+      'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=400&h=400&fit=crop',
     ],
     description: '进口永生花玫瑰，保存3-5年不变色，精致礼盒包装，适合送女友、送长辈。',
     status: 'active',
@@ -274,7 +274,7 @@ export const mockProducts: Product[] = [
     stock: 60,
     unit: '束',
     images: [
-      'https://picsum.photos/seed/sunflower/400/400',
+      'https://images.unsplash.com/photo-1597826368522-9f4cb5a6c2f6?w=400&h=400&fit=crop',
     ],
     description: '灿烂向日葵6朵，阳光般温暖，适合送给朋友、高考祝福、毕业季。',
     status: 'active',
@@ -293,7 +293,7 @@ export const mockProducts: Product[] = [
     stock: 20,
     unit: '束',
     images: [
-      'https://picsum.photos/seed/hydrangea/400/400',
+      'https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?w=400&h=400&fit=crop',
     ],
     description: '进口绣球花，多色混搭，饱满圆润，适合新娘手捧、家居摆设。',
     status: 'active',
@@ -312,7 +312,7 @@ export const mockProducts: Product[] = [
     stock: 30,
     unit: '对',
     images: [
-      'https://picsum.photos/seed/basket/400/400',
+      'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=400&fit=crop',
     ],
     description: '双层开业花篮，喜庆大气，适合新店开业、乔迁之喜、庆典活动。',
     status: 'active',
@@ -331,7 +331,7 @@ export const mockProducts: Product[] = [
     stock: 40,
     unit: '束',
     images: [
-      'https://picsum.photos/seed/gypsophila/400/400',
+      'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=400&h=400&fit=crop',
     ],
     description: '粉色洋桔梗，线条优美，花期长久，适合日常插花、家居装饰。',
     status: 'active',
@@ -514,10 +514,10 @@ export const mockCategorySales: CategorySales[] = [
 ];
 
 export const mockTopProducts: TopProduct[] = [
-  { id: 'p6', name: '多肉植物拼盘', sales: 567, image: 'https://picsum.photos/seed/succulent/200/200' },
-  { id: 'p7', name: '绿萝盆栽中号', sales: 423, image: 'https://picsum.photos/seed/pothos/200/200' },
-  { id: 'p5', name: '粉玫瑰19朵礼盒', sales: 412, image: 'https://picsum.photos/seed/pinkrose/200/200' },
-  { id: 'p1', name: '红玫瑰11朵礼盒', sales: 328, image: 'https://picsum.photos/seed/rose1/200/200' },
+  { id: 'p6', name: '多肉植物拼盘', sales: 567, image: 'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=200&h=200&fit=crop' },
+  { id: 'p7', name: '绿萝盆栽中号', sales: 423, image: 'https://images.unsplash.com/photo-1593691509543-c55fb32e7355?w=200&h=200&fit=crop' },
+  { id: 'p5', name: '粉玫瑰19朵礼盒', sales: 412, image: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=200&h=200&fit=crop' },
+  { id: 'p1', name: '红玫瑰11朵礼盒', sales: 328, image: 'https://images.unsplash.com/photo-1518882605630-8eb771acf33f?w=200&h=200&fit=crop' },
 ];
 
 // ==================== 工具函数 ====================
