@@ -121,8 +121,8 @@ export const mockProducts: Product[] = [
     stock: 50,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1518882605630-8eb771acf33f?w=400&h=400&fit=crop',
       'https://images.unsplash.com/photo-1548094990-c16ca90f1f0d?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400&h=400&fit=crop',
     ],
     description: '精选厄瓜多尔红玫瑰11朵，搭配精美礼盒包装，适合生日、情人节、纪念日等浪漫场合。',
     status: 'active',
@@ -141,7 +141,7 @@ export const mockProducts: Product[] = [
     stock: 80,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1596801351262-9b3dc9c436df?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=400&h=400&fit=crop',
     ],
     description: '粉色康乃馨16朵，象征母爱与温馨，适合母亲节、生日礼物、探病慰问。',
     status: 'active',
@@ -236,7 +236,7 @@ export const mockProducts: Product[] = [
     stock: 45,
     unit: '盆',
     images: [
-      'https://images.unsplash.com/photo-1593691509543-c55fb32e7355?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=400&h=400&fit=crop',
     ],
     description: '净化空气首选绿萝，中号盆栽，适合新居装修、办公室净化空气。',
     status: 'active',
@@ -274,7 +274,7 @@ export const mockProducts: Product[] = [
     stock: 60,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1597826368522-9f4cb5a6c2f6?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=400&h=400&fit=crop',
     ],
     description: '灿烂向日葵6朵，阳光般温暖，适合送给朋友、高考祝福、毕业季。',
     status: 'active',
@@ -515,9 +515,9 @@ export const mockCategorySales: CategorySales[] = [
 
 export const mockTopProducts: TopProduct[] = [
   { id: 'p6', name: '多肉植物拼盘', sales: 567, image: 'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=200&h=200&fit=crop' },
-  { id: 'p7', name: '绿萝盆栽中号', sales: 423, image: 'https://images.unsplash.com/photo-1593691509543-c55fb32e7355?w=200&h=200&fit=crop' },
+  { id: 'p7', name: '绿萝盆栽中号', sales: 423, image: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=200&h=200&fit=crop' },
   { id: 'p5', name: '粉玫瑰19朵礼盒', sales: 412, image: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=200&h=200&fit=crop' },
-  { id: 'p1', name: '红玫瑰11朵礼盒', sales: 328, image: 'https://images.unsplash.com/photo-1518882605630-8eb771acf33f?w=200&h=200&fit=crop' },
+  { id: 'p1', name: '红玫瑰11朵礼盒', sales: 328, image: 'https://images.unsplash.com/photo-1548094990-c16ca90f1f0d?w=200&h=200&fit=crop' },
 ];
 
 // ==================== 工具函数 ====================
@@ -614,10 +614,10 @@ export const aiSceneConfigs: AISceneConfig[] = [
 
 // Fallback鲜花图片 - 使用可靠的鲜花图片
 export const flowerFallbackImages: string[] = [
-  'https://images.unsplash.com/photo-1518882605630-8eb771acf33f?w=800&h=600&fit=crop', // 红玫瑰
-  'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&h=600&fit=crop', // 彩色鲜花
   'https://images.unsplash.com/photo-1548094990-c16ca90f1f0d?w=800&h=600&fit=crop', // 粉玫瑰
-  'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=800&h=600&fit=crop', // 白色鲜花
-  'https://images.unsplash.com/photo-1462275646964-a0e3571f4f8f?w=800&h=600&fit=crop', // 向日葵
-  'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=800&h=600&fit=crop', // 薰衣草
+  'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&h=600&fit=crop', // 彩色鲜花
+  'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&h=600&fit=crop', // 粉玫瑰
+  'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=800&h=600&fit=crop', // 白色鲜花
+  'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=800&h=600&fit=crop', // 向日葵
+  'https://images.unsplash.com/photo-1520763185298-1b434c919102?w=800&h=600&fit=crop', // 郁金香
 ];

@@ -255,7 +255,7 @@ export default function ProductsPage() {
                           alt={product.name}
                           className="w-12 h-12 rounded-lg object-cover"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1518882605630-8eb771acf33f?w=100&h=100&fit=crop';
+                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1548094990-c16ca90f1f0d?w=100&h=100&fit=crop';
                           }}
                         />
                         <div>
