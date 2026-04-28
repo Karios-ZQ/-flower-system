@@ -8,10 +8,9 @@ import {
   AlertTriangle,
   XCircle,
   Loader2,
-  Search,
-  Filter
+  Search
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -30,6 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { mockInventory } from '@/lib/mock-data';
 
 interface InventoryItem {
   product_id: number;
@@ -47,6 +47,7 @@ export default function InventoryMonitorPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [usingMockData, setUsingMockData] = useState(false);
 
   useEffect(() => {
     fetchInventory();
@@ -57,11 +58,17 @@ export default function InventoryMonitorPage() {
       setIsLoading(true);
       const response = await fetch('/api/inventory');
       const result = await response.json();
+      
       if (result.code === 200) {
         setInventory(result.data);
+        setUsingMockData(false);
+      } else {
+        setInventory(mockInventory);
+        setUsingMockData(true);
       }
-    } catch (error) {
-      console.error('Failed to fetch inventory:', error);
+    } catch {
+      setInventory(mockInventory);
+      setUsingMockData(true);
     } finally {
       setIsLoading(false);
     }
@@ -113,9 +120,16 @@ export default function InventoryMonitorPage() {
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">实时库存监控</h1>
-        <p className="text-slate-500 mt-1">实时监控商品库存状态</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">实时库存监控</h1>
+          <p className="text-slate-500 mt-1">实时监控商品库存状态</p>
+        </div>
+        {usingMockData && (
+          <span className="px-3 py-1 bg-amber-100 text-amber-700 text-sm rounded-full">
+            演示数据
+          </span>
+        )}
       </div>
 
       {/* Stats Cards */}

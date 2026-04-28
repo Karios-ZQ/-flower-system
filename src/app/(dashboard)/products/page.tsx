@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   Search,
-  Filter,
   Plus,
   MoreHorizontal,
   Edit,
@@ -49,33 +48,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-
-interface Product {
-  id: number;
-  name: string;
-  subcategory: string;
-  category_ids: number[];
-  category_names?: string[];
-  price: number;
-  market_price: number;
-  stock: number;
-  unit: string;
-  images: string[];
-  description: string;
-  tags: string[];
-  sales_count: number;
-  status: number;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Category {
-  id: number;
-  name: string;
-  parent_id: number;
-  level: number;
-  children?: Category[];
-}
+import { mockProducts, mockCategories, Product, Category } from '@/lib/mock-data';
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -87,10 +60,10 @@ export default function ProductsPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [usingMockData, setUsingMockData] = useState(false);
 
   useEffect(() => {
     fetchProducts();
-    fetchCategories();
   }, []);
 
   const fetchProducts = async () => {
@@ -98,33 +71,31 @@ export default function ProductsPage() {
       setIsLoading(true);
       const response = await fetch('/api/products');
       const result = await response.json();
-      if (result.code === 200) {
-        // 解析分类 IDs 为分类名称
-        const productsWithCategories = result.data.map((product: Product) => {
-          const categoryNames = product.category_ids?.map((id: number) => {
+      
+      if (result.code === 200 && result.data.list) {
+        // 使用真实数据
+        const productsWithCategories = result.data.list.map((product: Product) => ({
+          ...product,
+          category_names: product.category_ids?.map((id: number) => {
             const cat = findCategoryById(categories, id);
             return cat?.name || '';
-          }).filter(Boolean) || [];
-          return { ...product, category_names: categoryNames };
-        });
-        setProducts(result.data);
+          }).filter(Boolean) || [],
+        }));
+        setProducts(productsWithCategories);
+        setUsingMockData(false);
+      } else {
+        // 使用 mock 数据
+        setProducts(mockProducts);
+        setUsingMockData(true);
       }
-    } catch (error) {
-      console.error('Failed to fetch products:', error);
+    } catch {
+      // 使用 mock 数据
+      setProducts(mockProducts);
+      setCategories(mockCategories);
+      setUsingMockData(true);
     } finally {
+      setCategories(mockCategories);
       setIsLoading(false);
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch('/api/categories');
-      const result = await response.json();
-      if (result.code === 200) {
-        setCategories(result.data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch categories:', error);
     }
   };
 
@@ -148,35 +119,16 @@ export default function ProductsPage() {
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
-  const handleStatusChange = async (product: Product) => {
-    try {
-      const newStatus = product.status === 1 ? 0 : 1;
-      await fetch(`/api/products/${product.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      fetchProducts();
-    } catch (error) {
-      console.error('Failed to update status:', error);
-    }
+  const handleStatusChange = (product: Product) => {
+    setProducts(prev => prev.map(p => 
+      p.id === product.id ? { ...p, status: p.status === 1 ? 0 : 1 } : p
+    ));
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!deleteProduct) return;
-    
-    try {
-      setIsDeleting(true);
-      await fetch(`/api/products/${deleteProduct.id}`, {
-        method: 'DELETE',
-      });
-      setDeleteProduct(null);
-      fetchProducts();
-    } catch (error) {
-      console.error('Failed to delete product:', error);
-    } finally {
-      setIsDeleting(false);
-    }
+    setProducts(prev => prev.filter(p => p.id !== deleteProduct.id));
+    setDeleteProduct(null);
   };
 
   const getStatusBadge = (status: number) => {
@@ -215,13 +167,20 @@ export default function ProductsPage() {
           <h1 className="text-2xl font-bold text-slate-900">商品管理</h1>
           <p className="text-slate-500 mt-1">管理您的鲜花商品库存</p>
         </div>
-        <Button
-          onClick={() => router.push('/products/add')}
-          className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          添加商品
-        </Button>
+        <div className="flex items-center gap-3">
+          {usingMockData && (
+            <span className="px-3 py-1 bg-amber-100 text-amber-700 text-sm rounded-full">
+              演示数据
+            </span>
+          )}
+          <Button
+            onClick={() => router.push('/products/add')}
+            className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            添加商品
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}
