@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,14 +17,26 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import {
   ArrowLeft,
   Upload,
   X,
   Sparkles,
   Save,
   Image as ImageIcon,
+  Loader2,
+  Wand2,
+  Check,
+  RefreshCw,
+  Eye,
 } from 'lucide-react';
-import { mockCategories } from '@/lib/mock-data';
+import { mockCategories, aiSceneConfigs, AISceneConfig } from '@/lib/mock-data';
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -43,6 +55,15 @@ export default function AddProductPage() {
   });
   const [tagInput, setTagInput] = useState('');
   const [generatedDesc, setGeneratedDesc] = useState('');
+
+  // AI Scene Generation States
+  const [showAISceneDialog, setShowAISceneDialog] = useState(false);
+  const [selectedScene, setSelectedScene] = useState<AISceneConfig | null>(null);
+  const [customPrompt, setCustomPrompt] = useState('');
+  const [isGeneratingScene, setIsGeneratingScene] = useState(false);
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [selectedGeneratedImage, setSelectedGeneratedImage] = useState<string | null>(null);
+  const [generatedProductName, setGeneratedProductName] = useState('');
 
   const handleCategoryChange = (level: number, value: string) => {
     const newCategories = [...formData.categoryIds];
@@ -78,37 +99,149 @@ export default function AddProductPage() {
 
   const handleAIGenerate = async () => {
     setIsGenerating(true);
-    // Simulate AI generation
-    setTimeout(() => {
-      setGeneratedDesc(`精选优质红玫瑰，搭配精美礼盒包装，象征热烈的爱情与美好的祝福。
+    try {
+      const response = await fetch('/api/ai/generate-description', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          keywords: formData.name || '鲜花礼盒',
+          category: getCategoryNames().join(' > ') || '鲜切花',
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success && data.content) {
+        setGeneratedDesc(data.content);
+        setFormData((prev) => ({
+          ...prev,
+          description: data.content,
+        }));
+      } else {
+        // Fallback to mock data if API fails
+        setGeneratedDesc(`精选优质鲜花，精心搭配包装设计。
 
 🌸 花材介绍：
-采用厄瓜多尔进口红玫瑰，花瓣饱满、色泽艳丽，每一朵都经过精心挑选，保证最佳品质。
+采用当季最新鲜的花材，保证品质优良。
 
 ✨ 养护技巧：
-1. 收到花束后，请立即去除底部保水棉
-2. 斜剪花茎45度，增加吸水面积
-3. 保持水质清洁，每2天换水一次
-4. 避免阳光直射，远离空调出风口
-5. 室温保持在15-25℃最佳
+1. 保持水质清洁
+2. 避免阳光直射
+3. 适当修剪根部
 
 🎁 适用场景：
-- 生日祝福：传递真挚的生日祝愿
-- 情人节：表达热烈的爱意
-- 纪念日：见证爱情的重要时刻
-- 告白求婚：浪漫的表白神器
+- 生日庆祝
+- 纪念日
+- 探病慰问
+- 家居装饰
 
 💝 商品卖点：
-• 进口厄瓜多尔玫瑰，品质卓越
-• 保鲜期长达7天，超长待机
-• 专业花艺师精心包装
-• 当日配送，新鲜直达`);
-      setFormData({
-        ...formData,
-        description: generatedDesc || `精选优质红玫瑰，搭配精美礼盒包装，象征热烈的爱情与美好的祝福。`,
+• 新鲜直达
+• 包装精美
+• 性价比高`);
+        setFormData((prev) => ({
+          ...prev,
+          description: generatedDesc || `精选优质鲜花，精心搭配包装设计。花语寓意深刻，适合各种场合。`,
+        }));
+      }
+    } catch {
+      // Fallback to mock data
+      setGeneratedDesc(`精选优质鲜花，精心搭配包装设计。
+
+🌸 花材介绍：
+采用当季最新鲜的花材，保证品质优良。
+
+✨ 养护技巧：
+1. 保持水质清洁
+2. 避免阳光直射
+3. 适当修剪根部
+
+🎁 适用场景：
+- 生日庆祝
+- 纪念日
+- 探病慰问
+- 家居装饰
+
+💝 商品卖点：
+• 新鲜直达
+• 包装精美
+• 性价比高`);
+      setFormData((prev) => ({
+        ...prev,
+        description: generatedDesc || `精选优质鲜花，精心搭配包装设计。花语寓意深刻，适合各种场合。`,
+      }));
+    }
+    setIsGenerating(false);
+  };
+
+  // AI Scene Image Generation Functions
+  const handleGenerateSceneImages = async () => {
+    if (!selectedScene && !customPrompt) return;
+
+    setIsGeneratingScene(true);
+    setGeneratedImages([]);
+    setSelectedGeneratedImage(null);
+
+    try {
+      const prompt = selectedScene
+        ? `Product photography of ${formData.name || 'fresh flowers'}, ${selectedScene.prompt}`
+        : customPrompt;
+
+      const response = await fetch('/api/ai/generate-scene', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: formData.name || 'fresh flowers',
+          customPrompt: prompt,
+        }),
       });
-      setIsGenerating(false);
-    }, 2000);
+
+      const data = await response.json();
+
+      if (data.success && data.imageUrls) {
+        setGeneratedImages(data.imageUrls);
+        setGeneratedProductName(formData.name || '鲜花商品');
+      } else {
+        // Fallback: use picsum with seed based on prompt
+        const seed = selectedScene?.scene || 'flower';
+        const fallbackImages = [
+          `https://picsum.photos/seed/${seed}1/800/600`,
+          `https://picsum.photos/seed/${seed}2/800/600`,
+          `https://picsum.photos/seed/${seed}3/800/600`,
+        ];
+        setGeneratedImages(fallbackImages);
+        setGeneratedProductName(formData.name || '鲜花商品');
+      }
+    } catch {
+      // Fallback: use picsum with seed based on prompt
+      const seed = selectedScene?.scene || 'flower';
+      const fallbackImages = [
+        `https://picsum.photos/seed/${seed}1/800/600`,
+        `https://picsum.photos/seed/${seed}2/800/600`,
+        `https://picsum.photos/seed/${seed}3/800/600`,
+      ];
+      setGeneratedImages(fallbackImages);
+      setGeneratedProductName(formData.name || '鲜花商品');
+    }
+
+    setIsGeneratingScene(false);
+  };
+
+  const handleSelectGeneratedImage = (imageUrl: string) => {
+    setSelectedGeneratedImage(imageUrl);
+  };
+
+  const handleApplyGeneratedImage = () => {
+    if (selectedGeneratedImage) {
+      setFormData((prev) => ({
+        ...prev,
+        images: [...prev.images, selectedGeneratedImage],
+      }));
+      setShowAISceneDialog(false);
+      setSelectedGeneratedImage(null);
+      setGeneratedImages([]);
+      setSelectedScene(null);
+      setCustomPrompt('');
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -119,6 +252,16 @@ export default function AddProductPage() {
       setIsSubmitting(false);
       router.push('/products');
     }, 1500);
+  };
+
+  // Get the category names for display
+  const getCategoryNames = () => {
+    const names: string[] = [];
+    formData.categoryIds.forEach((id) => {
+      const category = mockCategories.find((c) => c.id === id);
+      if (category) names.push(category.name);
+    });
+    return names;
   };
 
   return (
@@ -188,7 +331,7 @@ export default function AddProductPage() {
                       value={formData.categoryIds[0] || ''}
                       onValueChange={(value) => handleCategoryChange(1, value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white">
                         <SelectValue placeholder="选择一级分类" />
                       </SelectTrigger>
                       <SelectContent>
@@ -205,7 +348,7 @@ export default function AddProductPage() {
                       onValueChange={(value) => handleCategoryChange(2, value)}
                       disabled={!formData.categoryIds[0]}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white">
                         <SelectValue placeholder="选择二级分类" />
                       </SelectTrigger>
                       <SelectContent>
@@ -222,7 +365,7 @@ export default function AddProductPage() {
                       onValueChange={(value) => handleCategoryChange(3, value)}
                       disabled={!formData.categoryIds[1]}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white">
                         <SelectValue placeholder="选择三级分类" />
                       </SelectTrigger>
                       <SelectContent>
@@ -234,6 +377,15 @@ export default function AddProductPage() {
                       </SelectContent>
                     </Select>
                   </div>
+                  {formData.categoryIds.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {getCategoryNames().map((name, index) => (
+                        <Badge key={index} variant="secondary" className="bg-pink-50 text-pink-700 border-pink-200">
+                          {name}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Price & Stock */}
@@ -303,7 +455,7 @@ export default function AddProductPage() {
                         setFormData({ ...formData, unit: value })
                       }
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -312,6 +464,7 @@ export default function AddProductPage() {
                         <SelectItem value="盒">盒</SelectItem>
                         <SelectItem value="支">支</SelectItem>
                         <SelectItem value="个">个</SelectItem>
+                        <SelectItem value="对">对</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -402,6 +555,9 @@ export default function AddProductPage() {
                           src={img}
                           alt={`商品图片 ${index + 1}`}
                           className="w-full aspect-square object-cover rounded-lg"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = `https://picsum.photos/seed/product${index}/400/400`;
+                          }}
                         />
                         <button
                           type="button"
@@ -449,11 +605,11 @@ export default function AddProductPage() {
                   <Button
                     type="button"
                     variant="outline"
-                    className="w-full gap-2"
-                    onClick={() => {}}
+                    className="w-full gap-2 bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200 hover:bg-purple-100"
+                    onClick={() => setShowAISceneDialog(true)}
                   >
-                    <Sparkles className="w-4 h-4" />
-                    生成场景图
+                    <Wand2 className="w-4 h-4 text-purple-500" />
+                    使用千问AI生成场景图
                   </Button>
                 </div>
               </CardContent>
@@ -461,6 +617,158 @@ export default function AddProductPage() {
           </div>
         </div>
       </form>
+
+      {/* AI Scene Image Generation Dialog */}
+      <Dialog open={showAISceneDialog} onOpenChange={setShowAISceneDialog}>
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Wand2 className="w-5 h-5 text-purple-500" />
+              AI 场景图生成 - 千问大模型
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-6">
+            {/* Scene Selection */}
+            <div className="space-y-3">
+              <Label>选择场景模板</Label>
+              <div className="grid grid-cols-4 gap-3">
+                {aiSceneConfigs.map((scene) => (
+                  <button
+                    key={scene.scene}
+                    type="button"
+                    onClick={() => setSelectedScene(scene)}
+                    className={`p-3 rounded-lg border-2 transition-all text-left ${
+                      selectedScene?.scene === scene.scene
+                        ? 'border-purple-500 bg-purple-50'
+                        : 'border-slate-200 hover:border-purple-300 hover:bg-slate-50'
+                    }`}
+                  >
+                    <p className="font-medium text-sm text-slate-900">{scene.description}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Custom Prompt */}
+            <div className="space-y-3">
+              <Label htmlFor="customPrompt">
+                自定义提示词（可选）
+              </Label>
+              <Textarea
+                id="customPrompt"
+                placeholder="输入自定义的场景描述，如：在一张白色大理石桌面上摆放的玫瑰花束，配以柔和的自然光..."
+                value={customPrompt}
+                onChange={(e) => {
+                  setCustomPrompt(e.target.value);
+                  if (e.target.value) setSelectedScene(null);
+                }}
+                rows={3}
+              />
+              <p className="text-xs text-slate-400">
+                如果输入自定义提示词，将优先使用您的描述生成图片
+              </p>
+            </div>
+
+            {/* Product Name Reference */}
+            <div className="space-y-2">
+              <Label>参考商品名称</Label>
+              <Input
+                placeholder="输入商品名称，AI将结合商品特征生成场景图"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+            </div>
+
+            {/* Generate Button */}
+            <Button
+              onClick={handleGenerateSceneImages}
+              disabled={isGeneratingScene || (!selectedScene && !customPrompt)}
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 gap-2"
+            >
+              {isGeneratingScene ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  正在生成中，请稍候...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4" />
+                  开始生成场景图
+                </>
+              )}
+            </Button>
+
+            {/* Generated Images */}
+            {generatedImages.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label>生成结果</Label>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleGenerateSceneImages}
+                    disabled={isGeneratingScene}
+                    className="gap-1"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    重新生成
+                  </Button>
+                </div>
+                
+                {/* Image Grid */}
+                <div className="grid grid-cols-3 gap-3">
+                  {generatedImages.map((url, index) => (
+                    <div
+                      key={index}
+                      className={`relative group cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
+                        selectedGeneratedImage === url
+                          ? 'border-green-500 ring-2 ring-green-200'
+                          : 'border-slate-200 hover:border-purple-300'
+                      }`}
+                      onClick={() => handleSelectGeneratedImage(url)}
+                    >
+                      <img
+                        src={url}
+                        alt={`生成的场景图 ${index + 1}`}
+                        className="w-full aspect-square object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = `https://picsum.photos/seed/scene${index}/400/400`;
+                        }}
+                      />
+                      {selectedGeneratedImage === url && (
+                        <div className="absolute top-2 right-2 p-1 bg-green-500 text-white rounded-full">
+                          <Check className="w-4 h-4" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    className="flex-1 gap-2"
+                    onClick={() => setSelectedGeneratedImage(null)}
+                  >
+                    取消选择
+                  </Button>
+                  <Button
+                    onClick={handleApplyGeneratedImage}
+                    disabled={!selectedGeneratedImage}
+                    className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 gap-2"
+                  >
+                    <Check className="w-4 h-4" />
+                    应用到商品
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }

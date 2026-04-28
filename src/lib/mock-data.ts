@@ -28,18 +28,84 @@ export const mockUsers: User[] = [
 // ==================== 模拟分类数据 ====================
 
 export const mockCategories: Category[] = [
+  // 一级分类
   { id: 'c1', name: '鲜切花', parentId: undefined, level: 1 },
   { id: 'c2', name: '绿植盆栽', parentId: undefined, level: 1 },
   { id: 'c3', name: '永生花', parentId: undefined, level: 1 },
-  { id: 'c4', name: '玫瑰', parentId: 'c1', level: 2 },
-  { id: 'c5', name: '百合', parentId: 'c1', level: 2 },
-  { id: 'c6', name: '康乃馨', parentId: 'c1', level: 2 },
-  { id: 'c7', name: '郁金香', parentId: 'c1', level: 2 },
-  { id: 'c8', name: '红玫瑰', parentId: 'c4', level: 3 },
-  { id: 'c9', name: '粉玫瑰', parentId: 'c4', level: 3 },
-  { id: 'c10', name: '白玫瑰', parentId: 'c4', level: 3 },
-  { id: 'c11', name: '多肉植物', parentId: 'c2', level: 2 },
-  { id: 'c12', name: '绿萝', parentId: 'c2', level: 2 },
+  { id: 'c4', name: '花艺周边', parentId: undefined, level: 1 },
+  { id: 'c5', name: '婚礼花艺', parentId: undefined, level: 1 },
+  { id: 'c6', name: '商务定制', parentId: undefined, level: 1 },
+  
+  // 鲜切花 - 二级分类
+  { id: 'c11', name: '玫瑰', parentId: 'c1', level: 2 },
+  { id: 'c12', name: '百合', parentId: 'c1', level: 2 },
+  { id: 'c13', name: '康乃馨', parentId: 'c1', level: 2 },
+  { id: 'c14', name: '郁金香', parentId: 'c1', level: 2 },
+  { id: 'c15', name: '向日葵', parentId: 'c1', level: 2 },
+  { id: 'c16', name: '洋桔梗', parentId: 'c1', level: 2 },
+  { id: 'c17', name: '绣球', parentId: 'c1', level: 2 },
+  { id: 'c18', name: '满天星', parentId: 'c1', level: 2 },
+  { id: 'c19', name: '紫罗兰', parentId: 'c1', level: 2 },
+  { id: 'c110', name: '菊花', parentId: 'c1', level: 2 },
+  
+  // 玫瑰 - 三级分类
+  { id: 'c111', name: '红玫瑰', parentId: 'c11', level: 3 },
+  { id: 'c112', name: '粉玫瑰', parentId: 'c11', level: 3 },
+  { id: 'c113', name: '白玫瑰', parentId: 'c11', level: 3 },
+  { id: 'c114', name: '香槟玫瑰', parentId: 'c11', level: 3 },
+  { id: 'c115', name: '紫玫瑰', parentId: 'c11', level: 3 },
+  { id: 'c116', name: '黄玫瑰', parentId: 'c11', level: 3 },
+  { id: 'c117', name: '蓝玫瑰', parentId: 'c11', level: 3 },
+  { id: 'c118', name: '彩虹玫瑰', parentId: 'c11', level: 3 },
+  
+  // 百合 - 三级分类
+  { id: 'c121', name: '白百合', parentId: 'c12', level: 3 },
+  { id: 'c122', name: '粉百合', parentId: 'c12', level: 3 },
+  { id: 'c123', name: '黄百合', parentId: 'c12', level: 3 },
+  { id: 'c124', name: 'OT百合', parentId: 'c12', level: 3 },
+  { id: 'c125', name: '亚百合', parentId: 'c12', level: 3 },
+  
+  // 绿植盆栽 - 二级分类
+  { id: 'c21', name: '多肉植物', parentId: 'c2', level: 2 },
+  { id: 'c22', name: '绿植盆栽', parentId: 'c2', level: 2 },
+  { id: 'c23', name: '小型盆栽', parentId: 'c2', level: 2 },
+  { id: 'c24', name: '大型绿植', parentId: 'c2', level: 2 },
+  { id: 'c25', name: '水培植物', parentId: 'c2', level: 2 },
+  
+  // 多肉 - 三级分类
+  { id: 'c211', name: '景天科', parentId: 'c21', level: 3 },
+  { id: 'c212', name: '十二卷属', parentId: 'c21', level: 3 },
+  { id: 'c213', name: '仙人掌科', parentId: 'c21', level: 3 },
+  { id: 'c214', name: '番杏科', parentId: 'c21', level: 3 },
+  { id: 'c215', name: '莲花掌属', parentId: 'c21', level: 3 },
+  
+  // 永生花 - 二级分类
+  { id: 'c31', name: '永生玫瑰', parentId: 'c3', level: 2 },
+  { id: 'c32', name: '永生盒花', parentId: 'c3', level: 2 },
+  { id: 'c33', name: '永生花瓶', parentId: 'c3', level: 2 },
+  { id: 'c34', name: '永生花束', parentId: 'c3', level: 2 },
+  { id: 'c35', name: '香薰永生花', parentId: 'c3', level: 2 },
+  
+  // 花艺周边 - 二级分类
+  { id: 'c41', name: '花瓶花器', parentId: 'c4', level: 2 },
+  { id: 'c42', name: '包装材料', parentId: 'c4', level: 2 },
+  { id: 'c43', name: '工具辅材', parentId: 'c4', level: 2 },
+  { id: 'c44', name: '营养液肥', parentId: 'c4', level: 2 },
+  { id: 'c45', name: '贺卡丝带', parentId: 'c4', level: 2 },
+  
+  // 婚礼花艺 - 二级分类
+  { id: 'c51', name: '手捧花', parentId: 'c5', level: 2 },
+  { id: 'c52', name: '胸花腕花', parentId: 'c5', level: 2 },
+  { id: 'c53', name: '婚车花艺', parentId: 'c5', level: 2 },
+  { id: 'c54', name: '拱门花艺', parentId: 'c5', level: 2 },
+  { id: 'c55', name: '桌花布置', parentId: 'c5', level: 2 },
+  
+  // 商务定制 - 二级分类
+  { id: 'c61', name: '开业花篮', parentId: 'c6', level: 2 },
+  { id: 'c62', name: '会议桌花', parentId: 'c6', level: 2 },
+  { id: 'c63', name: '绿植租摆', parentId: 'c6', level: 2 },
+  { id: 'c64', name: '企业定制', parentId: 'c6', level: 2 },
+  { id: 'c65', name: '节日花艺', parentId: 'c6', level: 2 },
 ];
 
 // ==================== 模拟商品数据 ====================
@@ -48,15 +114,15 @@ export const mockProducts: Product[] = [
   {
     id: 'p1',
     name: '红玫瑰11朵礼盒',
-    categoryIds: ['c1', 'c4', 'c8'],
+    categoryIds: ['c1', 'c11', 'c111'],
     categoryNames: ['鲜切花', '玫瑰', '红玫瑰'],
     price: 199,
     marketPrice: 259,
     stock: 50,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1518882605630-8eb704f77a0f?w=400',
-      'https://images.unsplash.com/photo-1548092990-5e0ba7a55f93?w=400',
+      'https://picsum.photos/seed/rose1/400/400',
+      'https://picsum.photos/seed/rose2/400/400',
     ],
     description: '精选厄瓜多尔红玫瑰11朵，搭配精美礼盒包装，适合生日、情人节、纪念日等浪漫场合。',
     status: 'active',
@@ -68,14 +134,14 @@ export const mockProducts: Product[] = [
   {
     id: 'p2',
     name: '粉色康乃馨16朵',
-    categoryIds: ['c1', 'c6'],
+    categoryIds: ['c1', 'c13'],
     categoryNames: ['鲜切花', '康乃馨'],
     price: 128,
     marketPrice: 158,
     stock: 80,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1522748906645-95d8adfd52c7?w=400',
+      'https://picsum.photos/seed/carnation/400/400',
     ],
     description: '粉色康乃馨16朵，象征母爱与温馨，适合母亲节、生日礼物、探病慰问。',
     status: 'active',
@@ -87,14 +153,14 @@ export const mockProducts: Product[] = [
   {
     id: 'p3',
     name: '白百合3朵+满天星',
-    categoryIds: ['c1', 'c5'],
-    categoryNames: ['鲜切花', '百合'],
+    categoryIds: ['c1', 'c12', 'c121'],
+    categoryNames: ['鲜切花', '百合', '白百合'],
     price: 158,
     marketPrice: 198,
     stock: 35,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1616638775683-93c8f2d0a8c2?w=400',
+      'https://picsum.photos/seed/lily/400/400',
     ],
     description: '精选白百合3朵搭配满天星，清新淡雅，适合开业、乔迁、家居装饰。',
     status: 'active',
@@ -106,14 +172,14 @@ export const mockProducts: Product[] = [
   {
     id: 'p4',
     name: '郁金香10朵混色',
-    categoryIds: ['c1', 'c7'],
+    categoryIds: ['c1', 'c14'],
     categoryNames: ['鲜切花', '郁金香'],
     price: 188,
     marketPrice: 228,
     stock: 5,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400',
+      'https://picsum.photos/seed/tulip/400/400',
     ],
     description: '荷兰进口郁金香10朵，多色混搭，高贵优雅，适合高端礼品、婚礼装饰。',
     status: 'active',
@@ -125,14 +191,14 @@ export const mockProducts: Product[] = [
   {
     id: 'p5',
     name: '粉玫瑰19朵礼盒',
-    categoryIds: ['c1', 'c4', 'c9'],
+    categoryIds: ['c1', 'c11', 'c112'],
     categoryNames: ['鲜切花', '玫瑰', '粉玫瑰'],
     price: 268,
     marketPrice: 328,
     stock: 0,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=400',
+      'https://picsum.photos/seed/pinkrose/400/400',
     ],
     description: '粉色玫瑰19朵，精美礼盒包装，表达深深的爱意与祝福，适合表白、求婚。',
     status: 'inactive',
@@ -144,14 +210,14 @@ export const mockProducts: Product[] = [
   {
     id: 'p6',
     name: '多肉植物拼盘',
-    categoryIds: ['c2', 'c11'],
-    categoryNames: ['绿植盆栽', '多肉植物'],
+    categoryIds: ['c2', 'c21', 'c211'],
+    categoryNames: ['绿植盆栽', '多肉植物', '景天科'],
     price: 88,
     marketPrice: 108,
     stock: 120,
     unit: '盆',
     images: [
-      'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=400',
+      'https://picsum.photos/seed/succulent/400/400',
     ],
     description: '精选5种多肉植物组合拼盘，易养护，适合办公室桌摆、窗台装饰。',
     status: 'active',
@@ -163,14 +229,14 @@ export const mockProducts: Product[] = [
   {
     id: 'p7',
     name: '绿萝盆栽中号',
-    categoryIds: ['c2', 'c12'],
-    categoryNames: ['绿植盆栽', '绿萝'],
+    categoryIds: ['c2', 'c22'],
+    categoryNames: ['绿植盆栽', '绿植盆栽'],
     price: 68,
     marketPrice: 88,
     stock: 45,
     unit: '盆',
     images: [
-      'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=400',
+      'https://picsum.photos/seed/pothos/400/400',
     ],
     description: '净化空气首选绿萝，中号盆栽，适合新居装修、办公室净化空气。',
     status: 'active',
@@ -182,14 +248,14 @@ export const mockProducts: Product[] = [
   {
     id: 'p8',
     name: '永生花玫瑰礼盒',
-    categoryIds: ['c3'],
-    categoryNames: ['永生花'],
+    categoryIds: ['c3', 'c31'],
+    categoryNames: ['永生花', '永生玫瑰'],
     price: 388,
     marketPrice: 488,
     stock: 25,
     unit: '盒',
     images: [
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
+      'https://picsum.photos/seed/preserve/400/400',
     ],
     description: '进口永生花玫瑰，保存3-5年不变色，精致礼盒包装，适合送女友、送长辈。',
     status: 'active',
@@ -197,6 +263,82 @@ export const mockProducts: Product[] = [
     salesCount: 156,
     createdAt: '2024-06-20T10:00:00Z',
     updatedAt: '2024-11-19T13:45:00Z',
+  },
+  {
+    id: 'p9',
+    name: '向日葵6朵阳光礼盒',
+    categoryIds: ['c1', 'c15'],
+    categoryNames: ['鲜切花', '向日葵'],
+    price: 168,
+    marketPrice: 198,
+    stock: 60,
+    unit: '束',
+    images: [
+      'https://picsum.photos/seed/sunflower/400/400',
+    ],
+    description: '灿烂向日葵6朵，阳光般温暖，适合送给朋友、高考祝福、毕业季。',
+    status: 'active',
+    tags: ['向日葵', '阳光', '祝福', '毕业'],
+    salesCount: 234,
+    createdAt: '2024-07-15T10:00:00Z',
+    updatedAt: '2024-11-20T10:00:00Z',
+  },
+  {
+    id: 'p10',
+    name: '绣球花束混色',
+    categoryIds: ['c1', 'c17'],
+    categoryNames: ['鲜切花', '绣球'],
+    price: 258,
+    marketPrice: 318,
+    stock: 20,
+    unit: '束',
+    images: [
+      'https://picsum.photos/seed/hydrangea/400/400',
+    ],
+    description: '进口绣球花，多色混搭，饱满圆润，适合新娘手捧、家居摆设。',
+    status: 'active',
+    tags: ['绣球', '混色', '进口', '高端'],
+    salesCount: 145,
+    createdAt: '2024-08-01T10:00:00Z',
+    updatedAt: '2024-11-18T14:00:00Z',
+  },
+  {
+    id: 'p11',
+    name: '开业花篮大号',
+    categoryIds: ['c6', 'c61'],
+    categoryNames: ['商务定制', '开业花篮'],
+    price: 388,
+    marketPrice: 458,
+    stock: 30,
+    unit: '对',
+    images: [
+      'https://picsum.photos/seed/basket/400/400',
+    ],
+    description: '双层开业花篮，喜庆大气，适合新店开业、乔迁之喜、庆典活动。',
+    status: 'active',
+    tags: ['开业', '花篮', '喜庆', '商务'],
+    salesCount: 89,
+    createdAt: '2024-08-10T10:00:00Z',
+    updatedAt: '2024-11-15T09:00:00Z',
+  },
+  {
+    id: 'p12',
+    name: '洋桔梗粉色束',
+    categoryIds: ['c1', 'c16'],
+    categoryNames: ['鲜切花', '洋桔梗'],
+    price: 138,
+    marketPrice: 168,
+    stock: 40,
+    unit: '束',
+    images: [
+      'https://picsum.photos/seed/gypsophila/400/400',
+    ],
+    description: '粉色洋桔梗，线条优美，花期长久，适合日常插花、家居装饰。',
+    status: 'active',
+    tags: ['洋桔梗', '粉色', '日常', '花期长'],
+    salesCount: 198,
+    createdAt: '2024-08-20T10:00:00Z',
+    updatedAt: '2024-11-12T11:00:00Z',
   },
 ];
 
@@ -344,13 +486,13 @@ export const mockStockWarnings: StockWarning[] = [
 // ==================== 模拟统计数据 ====================
 
 export const mockDashboardStats: DashboardStats = {
-  totalProducts: 8,
-  activeProducts: 7,
+  totalProducts: 12,
+  activeProducts: 11,
   lowStockProducts: 2,
   outOfStockProducts: 1,
-  todaySales: 2860,
-  todayOrders: 23,
-  inventoryValue: 45800,
+  todaySales: 3560,
+  todayOrders: 28,
+  inventoryValue: 52800,
   warningCount: 2,
 };
 
@@ -365,16 +507,17 @@ export const mockSalesTrend: SalesTrend[] = Array.from({ length: 7 }, (_, i) => 
 });
 
 export const mockCategorySales: CategorySales[] = [
-  { categoryName: '鲜切花', sales: 15680, percentage: 52 },
-  { categoryName: '绿植盆栽', sales: 8920, percentage: 30 },
-  { categoryName: '永生花', sales: 5420, percentage: 18 },
+  { categoryName: '鲜切花', sales: 18680, percentage: 52 },
+  { categoryName: '绿植盆栽', sales: 8920, percentage: 25 },
+  { categoryName: '永生花', sales: 5420, percentage: 15 },
+  { categoryName: '商务定制', sales: 2900, percentage: 8 },
 ];
 
 export const mockTopProducts: TopProduct[] = [
-  { id: 'p6', name: '多肉植物拼盘', sales: 567, image: 'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=200' },
-  { id: 'p7', name: '绿萝盆栽中号', sales: 423, image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=200' },
-  { id: 'p5', name: '粉玫瑰19朵礼盒', sales: 412, image: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=200' },
-  { id: 'p1', name: '红玫瑰11朵礼盒', sales: 328, image: 'https://images.unsplash.com/photo-1518882605630-8eb704f77a0f?w=200' },
+  { id: 'p6', name: '多肉植物拼盘', sales: 567, image: 'https://picsum.photos/seed/succulent/200/200' },
+  { id: 'p7', name: '绿萝盆栽中号', sales: 423, image: 'https://picsum.photos/seed/pothos/200/200' },
+  { id: 'p5', name: '粉玫瑰19朵礼盒', sales: 412, image: 'https://picsum.photos/seed/pinkrose/200/200' },
+  { id: 'p1', name: '红玫瑰11朵礼盒', sales: 328, image: 'https://picsum.photos/seed/rose1/200/200' },
 ];
 
 // ==================== 工具函数 ====================
@@ -417,3 +560,54 @@ export const getStockStatusColor = (status: string): string => {
   };
   return colors[status] || 'text-gray-600 bg-gray-50';
 };
+
+// ==================== AI 场景图生成配置 ====================
+
+export interface AISceneConfig {
+  scene: string;
+  description: string;
+  prompt: string;
+}
+
+export const aiSceneConfigs: AISceneConfig[] = [
+  {
+    scene: 'gift',
+    description: '礼物场景',
+    prompt: 'A beautiful flower gift box with roses, elegant wrapping, on a marble table with soft ambient lighting, romantic atmosphere, professional photography, high quality',
+  },
+  {
+    scene: 'home',
+    description: '家居场景',
+    prompt: 'Fresh flowers in a vase on a modern Scandinavian style coffee table, warm living room background, natural sunlight, cozy atmosphere, professional product photography',
+  },
+  {
+    scene: 'wedding',
+    description: '婚礼场景',
+    prompt: 'Elegant wedding floral arrangement with white roses and peonies, romantic outdoor ceremony background, soft natural lighting, dreamy atmosphere',
+  },
+  {
+    scene: 'office',
+    description: '办公场景',
+    prompt: 'Fresh potted plants on a clean office desk, modern minimalist workspace background, bright natural lighting, productive atmosphere',
+  },
+  {
+    scene: 'celebration',
+    description: '庆典场景',
+    prompt: 'Colorful flower arrangements for celebration event, elegant banquet hall background, festive atmosphere with confetti, warm lighting',
+  },
+  {
+    scene: 'valentine',
+    description: '情人节场景',
+    prompt: 'Romantic red rose bouquet with heart-shaped arrangement, candlelit dinner background, Valentine\'s Day atmosphere, intimate and loving mood',
+  },
+  {
+    scene: 'birthday',
+    description: '生日场景',
+    prompt: 'Beautiful flower arrangement with birthday cake, festive celebration background, colorful balloons and decorations, joyful atmosphere',
+  },
+  {
+    scene: 'commercial',
+    description: '商业场景',
+    prompt: 'Professional commercial flower display in luxury hotel lobby, grand entrance with floral arrangement, elegant marble floors, sophisticated ambiance',
+  },
+];
