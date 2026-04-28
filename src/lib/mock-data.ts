@@ -573,41 +573,51 @@ export const aiSceneConfigs: AISceneConfig[] = [
   {
     scene: 'gift',
     description: '礼物场景',
-    prompt: 'A beautiful flower gift box with roses, elegant wrapping, on a marble table with soft ambient lighting, romantic atmosphere, professional photography, high quality',
+    prompt: 'Fresh rose bouquet gift box with elegant wrapping paper and ribbon, on a white marble table, soft studio lighting, romantic pink background, professional product photography, high detail, 8K quality',
   },
   {
     scene: 'home',
     description: '家居场景',
-    prompt: 'Fresh flowers in a vase on a modern Scandinavian style coffee table, warm living room background, natural sunlight, cozy atmosphere, professional product photography',
+    prompt: 'Fresh flowers in an elegant glass vase on a wooden Scandinavian style coffee table, warm cozy living room background with natural sunlight streaming through window, minimalist interior design, professional photography',
   },
   {
     scene: 'wedding',
     description: '婚礼场景',
-    prompt: 'Elegant wedding floral arrangement with white roses and peonies, romantic outdoor ceremony background, soft natural lighting, dreamy atmosphere',
+    prompt: 'Elegant white rose and peony wedding floral arrangement with greenery, romantic outdoor garden ceremony background, soft natural golden hour lighting, dreamy bokeh effect, professional wedding photography',
   },
   {
     scene: 'office',
     description: '办公场景',
-    prompt: 'Fresh potted plants on a clean office desk, modern minimalist workspace background, bright natural lighting, productive atmosphere',
+    prompt: 'Fresh potted orchid plant on a clean modern office desk, minimal white workspace background, bright natural window light, professional product photography, fresh green leaves',
   },
   {
     scene: 'celebration',
     description: '庆典场景',
-    prompt: 'Colorful flower arrangements for celebration event, elegant banquet hall background, festive atmosphere with confetti, warm lighting',
+    prompt: 'Colorful mixed flower arrangement with roses, lilies and sunflowers in an elegant vase, festive celebration background with warm golden lighting, professional event photography',
   },
   {
     scene: 'valentine',
     description: '情人节场景',
-    prompt: 'Romantic red rose bouquet with heart-shaped arrangement, candlelit dinner background, Valentine\'s Day atmosphere, intimate and loving mood',
+    prompt: 'Luxurious red rose heart-shaped bouquet with black wrapping paper and LED lights, romantic candlelit dinner table background, Valentine\'s Day atmosphere, intimate mood lighting, professional photography',
   },
   {
     scene: 'birthday',
     description: '生日场景',
-    prompt: 'Beautiful flower arrangement with birthday cake, festive celebration background, colorful balloons and decorations, joyful atmosphere',
+    prompt: 'Beautiful pink and white flower arrangement with hydrangeas and roses as birthday gift, festive background with soft bokeh lights, celebration cake nearby, joyful warm atmosphere',
   },
   {
     scene: 'commercial',
     description: '商业场景',
-    prompt: 'Professional commercial flower display in luxury hotel lobby, grand entrance with floral arrangement, elegant marble floors, sophisticated ambiance',
+    prompt: 'Luxury flower shop display with premium fresh cut roses and exotic flowers in crystal vases, elegant upscale boutique background, sophisticated warm ambient lighting, professional commercial photography',
   },
+];
+
+// Fallback鲜花图片 - 使用可靠的鲜花图片
+export const flowerFallbackImages: string[] = [
+  'https://images.unsplash.com/photo-1518882605630-8eb771acf33f?w=800&h=600&fit=crop', // 红玫瑰
+  'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&h=600&fit=crop', // 彩色鲜花
+  'https://images.unsplash.com/photo-1548094990-c16ca90f1f0d?w=800&h=600&fit=crop', // 粉玫瑰
+  'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=800&h=600&fit=crop', // 白色鲜花
+  'https://images.unsplash.com/photo-1462275646964-a0e3571f4f8f?w=800&h=600&fit=crop', // 向日葵
+  'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=800&h=600&fit=crop', // 薰衣草
 ];

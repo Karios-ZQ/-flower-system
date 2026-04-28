@@ -13,26 +13,29 @@ export async function POST(request: NextRequest) {
     const config = new Config();
     const client = new ImageGenerationClient(config, customHeaders);
 
+    // Use custom prompt if provided, otherwise use default flower prompt
+    const finalPrompt = customPrompt || prompt || 'beautiful fresh flowers bouquet, professional product photography, high quality, 8K detail';
+
     // Generate the image using the provided prompt
     const response = await client.generate({
-      prompt: customPrompt || prompt,
+      prompt: finalPrompt,
       size: '2K',
       watermark: false, // Disable watermark for cleaner product images
     });
 
     const helper = client.getResponseHelper(response);
 
-    if (helper.success) {
+    if (helper.success && helper.imageUrls.length > 0) {
       return NextResponse.json({
         success: true,
         imageUrls: helper.imageUrls,
-        prompt: customPrompt || prompt,
+        prompt: finalPrompt,
       });
     } else {
       return NextResponse.json(
         {
           success: false,
-          errors: helper.errorMessages,
+          errors: helper.errorMessages || ['Image generation failed'],
         },
         { status: 500 }
       );

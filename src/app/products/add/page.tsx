@@ -36,7 +36,7 @@ import {
   RefreshCw,
   Eye,
 } from 'lucide-react';
-import { mockCategories, aiSceneConfigs, AISceneConfig } from '@/lib/mock-data';
+import { mockCategories, aiSceneConfigs, AISceneConfig, flowerFallbackImages } from '@/lib/mock-data';
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -182,44 +182,40 @@ export default function AddProductPage() {
     setSelectedGeneratedImage(null);
 
     try {
-      const prompt = selectedScene
-        ? `Product photography of ${formData.name || 'fresh flowers'}, ${selectedScene.prompt}`
-        : customPrompt;
+      // 构建更精确的prompt，确保生成鲜花图片
+      const productName = formData.name || 'fresh flowers';
+      let prompt: string;
+
+      if (selectedScene) {
+        prompt = `${productName}, ${selectedScene.prompt}`;
+      } else {
+        prompt = `${productName}, ${customPrompt}, professional product photography, high quality, 8K detail`;
+      }
 
       const response = await fetch('/api/ai/generate-scene', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: formData.name || 'fresh flowers',
+          prompt: productName,
           customPrompt: prompt,
         }),
       });
 
       const data = await response.json();
 
-      if (data.success && data.imageUrls) {
+      if (data.success && data.imageUrls && data.imageUrls.length > 0) {
         setGeneratedImages(data.imageUrls);
-        setGeneratedProductName(formData.name || '鲜花商品');
+        setGeneratedProductName(productName);
       } else {
-        // Fallback: use picsum with seed based on prompt
-        const seed = selectedScene?.scene || 'flower';
-        const fallbackImages = [
-          `https://picsum.photos/seed/${seed}1/800/600`,
-          `https://picsum.photos/seed/${seed}2/800/600`,
-          `https://picsum.photos/seed/${seed}3/800/600`,
-        ];
-        setGeneratedImages(fallbackImages);
-        setGeneratedProductName(formData.name || '鲜花商品');
+        // Fallback: 使用可靠的鲜花图片
+        const shuffled = [...flowerFallbackImages].sort(() => Math.random() - 0.5);
+        setGeneratedImages(shuffled.slice(0, 3));
+        setGeneratedProductName(productName);
       }
     } catch {
-      // Fallback: use picsum with seed based on prompt
-      const seed = selectedScene?.scene || 'flower';
-      const fallbackImages = [
-        `https://picsum.photos/seed/${seed}1/800/600`,
-        `https://picsum.photos/seed/${seed}2/800/600`,
-        `https://picsum.photos/seed/${seed}3/800/600`,
-      ];
-      setGeneratedImages(fallbackImages);
+      // Fallback: 使用可靠的鲜花图片
+      const shuffled = [...flowerFallbackImages].sort(() => Math.random() - 0.5);
+      setGeneratedImages(shuffled.slice(0, 3));
       setGeneratedProductName(formData.name || '鲜花商品');
     }
 
