@@ -225,7 +225,7 @@ export interface TopProduct {
 
 // ==================== 通用响应 ====================
 
-export interface ApiResponse<T = void> {
+export interface ApiResponse<T = any> {
   code: number;
   message: string;
   data: T;
