@@ -55,8 +55,8 @@ export const mockProducts: Product[] = [
     stock: 50,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1518882605630-8eb704f77a0f?w=400',
-      'https://images.unsplash.com/photo-1548092990-5e0ba7a55f93?w=400',
+      'https://images.unsplash.com/photo-1518882605630-8eb704f77a0f?w=400&q=80',
+      'https://images.unsplash.com/photo-1548092990-5e0ba7a55f93?w=400&q=80',
     ],
     description: '精选厄瓜多尔红玫瑰11朵，搭配精美礼盒包装，适合生日、情人节、纪念日等浪漫场合。',
     status: 'active',
@@ -94,7 +94,7 @@ export const mockProducts: Product[] = [
     stock: 35,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1616638775683-93c8f2d0a8c2?w=400',
+      'https://images.unsplash.com/photo-1616638775683-93c8f2d0a8c2?w=400&q=80',
     ],
     description: '精选白百合3朵搭配满天星，清新淡雅，适合开业、乔迁、家居装饰。',
     status: 'active',
@@ -113,7 +113,7 @@ export const mockProducts: Product[] = [
     stock: 5,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400',
+      'https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&q=80',
     ],
     description: '荷兰进口郁金香10朵，多色混搭，高贵优雅，适合高端礼品、婚礼装饰。',
     status: 'active',
@@ -132,7 +132,7 @@ export const mockProducts: Product[] = [
     stock: 0,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=400',
+      'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=400&q=80',
     ],
     description: '粉色玫瑰19朵，精美礼盒包装，表达深深的爱意与祝福，适合表白、求婚。',
     status: 'inactive',
@@ -151,7 +151,7 @@ export const mockProducts: Product[] = [
     stock: 120,
     unit: '盆',
     images: [
-      'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=400',
+      'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=400&q=80',
     ],
     description: '精选5种多肉植物组合拼盘，易养护，适合办公室桌摆、窗台装饰。',
     status: 'active',
@@ -170,7 +170,7 @@ export const mockProducts: Product[] = [
     stock: 45,
     unit: '盆',
     images: [
-      'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=400',
+      'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=400&q=80',
     ],
     description: '净化空气首选绿萝，中号盆栽，适合新居装修、办公室净化空气。',
     status: 'active',
@@ -189,7 +189,7 @@ export const mockProducts: Product[] = [
     stock: 25,
     unit: '盒',
     images: [
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=80',
     ],
     description: '进口永生花玫瑰，保存3-5年不变色，精致礼盒包装，适合送女友、送长辈。',
     status: 'active',
