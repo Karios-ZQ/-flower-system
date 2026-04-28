@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -30,22 +30,34 @@ import {
 } from '@/components/ui/dialog';
 import {
   Search,
-  Plus,
   ArrowDownLeft,
   ArrowUpRight,
-  Filter,
   Download,
   Package,
-  ArrowRight,
+  Loader2,
 } from 'lucide-react';
 import {
-  mockStockRecords,
-  mockProducts,
   formatDate,
-  generateId,
 } from '@/lib/mock-data';
-import { StockRecord } from '@/lib/types';
 import { cn } from '@/lib/utils';
+
+interface StockRecord {
+  id: string;
+  productId: string;
+  productName: string;
+  type: 'in' | 'out';
+  subType: string;
+  quantity: number;
+  operator: string;
+  remark: string;
+  createdAt: string;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  stock: number;
+}
 
 const typeConfig = {
   in: { label: '入库', color: 'text-green-600', bgColor: 'bg-green-100', icon: ArrowDownLeft },
@@ -62,7 +74,10 @@ const subTypeMap = {
 };
 
 export default function InventoryRecordsPage() {
-  const [records, setRecords] = useState<StockRecord[]>(mockStockRecords);
+  const [records, setRecords] = useState<StockRecord[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -74,45 +89,84 @@ export default function InventoryRecordsPage() {
     remark: '',
   });
 
+  // 获取记录列表
+  const fetchRecords = async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (typeFilter !== 'all') params.append('type', typeFilter);
+      
+      const res = await fetch(`/api/inventory/records?${params}`);
+      const data = await res.json();
+      if (data.code === 200) {
+        setRecords(data.data.list || []);
+      }
+    } catch (error) {
+      console.error('获取记录失败:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 获取商品列表
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch('/api/products?pageSize=100');
+      const data = await res.json();
+      if (data.code === 200) {
+        setProducts(data.data.list || []);
+      }
+    } catch (error) {
+      console.error('获取商品失败:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecords();
+    fetchProducts();
+  }, [typeFilter]);
+
+  const handleAddRecord = async () => {
+    if (!newRecord.productId || !newRecord.quantity || !newRecord.subType) return;
+
+    setSubmitting(true);
+    try {
+      const api = addType === 'in' ? '/api/inventory/in' : '/api/inventory/out';
+      const res = await fetch(api, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: newRecord.productId,
+          quantity: parseInt(newRecord.quantity),
+          subType: newRecord.subType,
+          remark: newRecord.remark,
+          operator: 'admin',
+        }),
+      });
+      const data = await res.json();
+      if (data.code === 200) {
+        setShowAddDialog(false);
+        setNewRecord({ productId: '', quantity: '', subType: '', remark: '' });
+        fetchRecords();
+        fetchProducts();
+      } else {
+        alert(data.message || '操作失败');
+      }
+    } catch (error) {
+      console.error('操作失败:', error);
+      alert('操作失败，请重试');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const filteredRecords = records.filter((record) => {
     const matchKeyword =
       !searchKeyword ||
-      record.productName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      record.operator.toLowerCase().includes(searchKeyword.toLowerCase());
-    const matchType =
-      typeFilter === 'all' ||
-      record.type === typeFilter;
-    return matchKeyword && matchType;
+      (record.productName && record.productName.toLowerCase().includes(searchKeyword.toLowerCase())) ||
+      (record.operator && record.operator.toLowerCase().includes(searchKeyword.toLowerCase()));
+    return matchKeyword;
   });
-
-  const handleAddRecord = () => {
-    if (!newRecord.productId || !newRecord.quantity || !newRecord.subType) return;
-
-    const product = mockProducts.find((p) => p.id === newRecord.productId);
-    if (!product) return;
-
-    const subTypeInfo = subTypeMap[newRecord.subType as keyof typeof subTypeMap];
-    const quantity = parseInt(newRecord.quantity);
-    const record: StockRecord = {
-      id: generateId(),
-      productId: newRecord.productId,
-      productName: product.name,
-      type: subTypeInfo.type,
-      subType: newRecord.subType as any,
-      quantity,
-      beforeStock: product.stock,
-      afterStock: subTypeInfo.type === 'in' 
-        ? product.stock + quantity 
-        : product.stock - quantity,
-      operator: '管理员',
-      remark: newRecord.remark,
-      createdAt: new Date().toISOString(),
-    };
-
-    setRecords((prev) => [record, ...prev]);
-    setShowAddDialog(false);
-    setNewRecord({ productId: '', quantity: '', subType: '', remark: '' });
-  };
 
   return (
     <DashboardLayout
@@ -157,6 +211,7 @@ export default function InventoryRecordsPage() {
             <Button
               onClick={() => {
                 setAddType('in');
+                setNewRecord((prev) => ({ ...prev, subType: 'purchase' }));
                 setShowAddDialog(true);
               }}
               className="gap-2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
@@ -167,6 +222,7 @@ export default function InventoryRecordsPage() {
             <Button
               onClick={() => {
                 setAddType('out');
+                setNewRecord((prev) => ({ ...prev, subType: 'sale' }));
                 setShowAddDialog(true);
               }}
               className="gap-2 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600"
@@ -180,58 +236,56 @@ export default function InventoryRecordsPage() {
         {/* Records Table */}
         <Card>
           <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent">
-                  <TableHead>流水号</TableHead>
-                  <TableHead>商品信息</TableHead>
-                  <TableHead>类型</TableHead>
-                  <TableHead className="text-right">数量</TableHead>
-                  <TableHead className="text-right">变动前</TableHead>
-                  <TableHead className="text-right">变动后</TableHead>
-                  <TableHead>操作人</TableHead>
-                  <TableHead>时间</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredRecords.map((record) => {
-                  const config = typeConfig[record.type];
-                  const subTypeInfo = subTypeMap[record.subType];
-                  return (
-                    <TableRow key={record.id} className="table-row-hover">
-                      <TableCell>
-                        <p className="font-mono text-sm text-slate-500">{record.id.slice(0, 8)}</p>
-                      </TableCell>
-                      <TableCell>
-                        <p className="font-medium text-slate-900">{record.productName}</p>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={cn(config.bgColor, config.color)}>
-                          {subTypeInfo.label}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className={cn('text-right font-medium', config.color)}>
-                        {record.type === 'in' ? '+' : '-'}{record.quantity}
-                      </TableCell>
-                      <TableCell className="text-right text-slate-500">
-                        {record.beforeStock}
-                      </TableCell>
-                      <TableCell className="text-right text-slate-900">
-                        {record.afterStock}
-                      </TableCell>
-                      <TableCell>
-                        <p className="text-slate-600">{record.operator}</p>
-                      </TableCell>
-                      <TableCell>
-                        <p className="text-sm text-slate-500">{formatDate(record.createdAt)}</p>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead>流水号</TableHead>
+                    <TableHead>商品信息</TableHead>
+                    <TableHead>类型</TableHead>
+                    <TableHead className="text-right">数量</TableHead>
+                    <TableHead>操作人</TableHead>
+                    <TableHead>时间</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredRecords.map((record) => {
+                    const config = typeConfig[record.type];
+                    const subTypeInfo = subTypeMap[record.subType as keyof typeof subTypeMap] || { label: record.subType };
+                    return (
+                      <TableRow key={record.id} className="table-row-hover">
+                        <TableCell>
+                          <p className="font-mono text-sm text-slate-500">{record.id.slice(0, 12)}</p>
+                        </TableCell>
+                        <TableCell>
+                          <p className="font-medium text-slate-900">{record.productName || '-'}</p>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={cn(config.bgColor, config.color)}>
+                            {subTypeInfo.label}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className={cn('text-right font-medium', config.color)}>
+                          {record.type === 'in' ? '+' : '-'}{record.quantity}
+                        </TableCell>
+                        <TableCell>
+                          <p className="text-slate-600">{record.operator || 'admin'}</p>
+                        </TableCell>
+                        <TableCell>
+                          <p className="text-sm text-slate-500">{formatDate(record.createdAt)}</p>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            )}
 
-            {filteredRecords.length === 0 && (
+            {filteredRecords.length === 0 && !loading && (
               <div className="text-center py-12">
                 <Package className="w-12 h-12 mx-auto text-slate-300 mb-3" />
                 <p className="text-slate-400">暂无记录</p>
@@ -280,9 +334,9 @@ export default function InventoryRecordsPage() {
                   <SelectValue placeholder="请选择商品" />
                 </SelectTrigger>
                 <SelectContent>
-                  {mockProducts.map((product) => (
+                  {products.map((product) => (
                     <SelectItem key={product.id} value={product.id}>
-                      {product.name} (库存: {product.stock})
+                      {product.name} (库存: {product.stock || 0})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -339,13 +393,21 @@ export default function InventoryRecordsPage() {
             </Button>
             <Button
               onClick={handleAddRecord}
+              disabled={submitting}
               className={cn(
                 addType === 'in'
                   ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600'
                   : 'bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600'
               )}
             >
-              确认{addType === 'in' ? '入库' : '出库'}
+              {submitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  处理中...
+                </>
+              ) : (
+                `确认${addType === 'in' ? '入库' : '出库'}`
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
