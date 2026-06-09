@@ -40,7 +40,8 @@ export async function GET(
           price: product.price, marketPrice: product.marketPrice,
           stock: product.stock, unit: product.unit, images: product.images,
           description: product.description, status: product.status, tags: product.tags,
-          salesCount: product.salesCount, createdAt: product.createdAt.toISOString(), updatedAt: product.updatedAt.toISOString(),
+          salesCount: product.salesCount, createdAt: typeof product.createdAt === 'string' ? product.createdAt : (product.createdAt as Date).toISOString(),
+          updatedAt: typeof product.updatedAt === 'string' ? product.updatedAt : (product.updatedAt as Date).toISOString(),
         }
       });
     }

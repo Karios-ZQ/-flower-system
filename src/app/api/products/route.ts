@@ -90,8 +90,8 @@ export async function GET(request: NextRequest) {
         status: p.status,
         tags: p.tags,
         salesCount: p.salesCount,
-        createdAt: p.createdAt.toISOString(),
-        updatedAt: p.updatedAt.toISOString(),
+        createdAt: typeof p.createdAt === 'string' ? p.createdAt : (p.createdAt as Date).toISOString(),
+        updatedAt: typeof p.updatedAt === 'string' ? p.updatedAt : (p.updatedAt as Date).toISOString(),
       }));
 
       return NextResponse.json({
