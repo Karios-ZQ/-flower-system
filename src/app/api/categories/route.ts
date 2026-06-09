@@ -1,28 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
 import pool, { generateId } from '@/lib/db/mysql';
+import { mockCategories } from '@/lib/mock-data';
 
 // 获取分类列表
 export async function GET(request: NextRequest) {
   try {
-    const [rows] = await pool.query(
-      'SELECT * FROM categories ORDER BY level, sort, created_at'
-    );
+    try {
+      const [rows] = await pool.query(
+        'SELECT * FROM categories ORDER BY level, sort, created_at'
+      );
 
-    const categories = (rows as Record<string, unknown>[]).map(c => ({
-      id: c.id,
-      name: c.name,
-      parentId: c.parent_id,
-      level: c.level,
-      sort: c.sort,
-      icon: c.icon,
-      createdAt: c.created_at,
-    }));
+      const categories = (rows as Record<string, unknown>[]).map(c => ({
+        id: c.id,
+        name: c.name,
+        parentId: c.parent_id,
+        level: c.level,
+        sort: c.sort,
+        icon: c.icon,
+        createdAt: c.created_at,
+      }));
 
-    return NextResponse.json({
-      code: 200,
-      message: '获取成功',
-      data: categories
-    });
+      return NextResponse.json({
+        code: 200,
+        message: '获取成功',
+        data: categories
+      });
+    } catch (dbError) {
+      // Fallback to mock
+      return NextResponse.json({
+        code: 200,
+        message: '获取成功（模拟）',
+        data: mockCategories
+      });
+    }
   } catch (error) {
     console.error('获取分类列表失败:', error);
     return NextResponse.json({
