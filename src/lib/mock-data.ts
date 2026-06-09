@@ -121,8 +121,7 @@ export const mockProducts: Product[] = [
     stock: 50,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1548094990-c16ca90f1f0d?w=400&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1494972308805-463bc619d34e?w=400&h=400&fit=crop',
     ],
     description: '精选厄瓜多尔红玫瑰11朵，搭配精美礼盒包装，适合生日、情人节、纪念日等浪漫场合。',
     status: 'active',
@@ -160,7 +159,7 @@ export const mockProducts: Product[] = [
     stock: 35,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1615813967515-e1838c1c5116?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=400&h=400&fit=crop',
     ],
     description: '精选白百合3朵搭配满天星，清新淡雅，适合开业、乔迁、家居装饰。',
     status: 'active',
@@ -236,7 +235,7 @@ export const mockProducts: Product[] = [
     stock: 45,
     unit: '盆',
     images: [
-      'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1593691509543-c55fb32d8de5?w=400&h=400&fit=crop',
     ],
     description: '净化空气首选绿萝，中号盆栽，适合新居装修、办公室净化空气。',
     status: 'active',
@@ -274,7 +273,7 @@ export const mockProducts: Product[] = [
     stock: 60,
     unit: '束',
     images: [
-      'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=400&h=400&fit=crop',
     ],
     description: '灿烂向日葵6朵，阳光般温暖，适合送给朋友、高考祝福、毕业季。',
     status: 'active',
