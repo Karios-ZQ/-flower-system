@@ -86,7 +86,7 @@ export function Sidebar() {
           </div>
           <div>
             <h1 className="font-bold text-lg">花屿鲜花</h1>
-            <p className="text-xs text-slate-400">智能选购系统</p>
+            <p className="text-xs text-slate-400">鲜花商城</p>
           </div>
         </Link>
       </div>

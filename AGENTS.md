@@ -3,7 +3,7 @@
 ## 1. 项目概述
 
 ### 项目名称
-**花屿鲜花智能选购系统** (Flower Island Smart Selection System)
+**花屿鲜花商城** (Flower Island Mall)
 
 ### 项目定位
 基于 SpringBoot+Vue 架构的鲜花零售智能管理系统，聚焦商品管理与库存管理两大核心模块，深度融合 AI 技术实现智能化运营。

@@ -56,7 +56,7 @@ export default function LoginPage() {
             <Flower2 className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-slate-900">花屿鲜花</h1>
-          <p className="text-slate-500 mt-1">智能选购系统</p>
+          <p className="text-slate-500 mt-1">鲜花商城</p>
         </div>
 
         <Card className="shadow-xl border-0">
@@ -156,7 +156,7 @@ export default function LoginPage() {
         </Card>
 
         <p className="text-center text-sm text-slate-400 mt-6">
-          © 2024 花屿鲜花智能选购系统. All rights reserved.
+          © 2024 花屿鲜花商城. All rights reserved.
         </p>
       </div>
     </div>
